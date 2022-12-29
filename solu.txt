@@ -25,7 +25,7 @@ Empty set (0.00 sec)
 
 4)select the employee who is also a manager
 
-mysql>  select e.e_id,e.name,d.dept_id,d.dep_manager from employee e left join dept d on e.dep_id=d.dept_id where e.name=d.dep_manager;
+mysql>  select e.e_id,e.name,d.dept_id,d.dep_manager from employee e inner join dept d on e.dep_id=d.dept_id where e.name=d.dep_manager;
 +-------+-----------------+---------+-----------------+
 | e_id  | name            | dept_id | dep_manager     |
 +-------+-----------------+---------+-----------------+
@@ -39,7 +39,7 @@ mysql>  select e.e_id,e.name,d.dept_id,d.dep_manager from employee e left join d
 
 5)select the employee who is a manager and has least salary
 
-mysql>  select * from employee e left join dept d on e.dep_id=d.dept_id where e.name=d.dep_manager order by e.salary limit 1;
+mysql>  select * from employee e inner join dept d on e.dep_id=d.dept_id where e.name=d.dep_manager order by e.salary limit 1;
 +-------+--------------+--------+--------+------------+---------+-----------+--------------+
 | E_ID  | NAME         | DEP_ID | SALARY | MANAGER_ID | DEPT_ID | DEP_NAME  | DEP_MANAGER  |
 +-------+--------------+--------+--------+------------+---------+-----------+--------------+
@@ -49,7 +49,7 @@ mysql>  select * from employee e left join dept d on e.dep_id=d.dept_id where e.
 
 6)select the total number of employee in communications dept
 
-mysql> select count(e.e_id) from employee e left join dept d on e.dep_id=d.dept_id where d.dep_name='COMMUNICATION';
+mysql> select count(e.e_id) from employee e inner join dept d on e.dep_id=d.dept_id where d.dep_name='COMMUNICATION';
 +---------------+
 | count(e.e_id) |
 +---------------+
@@ -58,16 +58,16 @@ mysql> select count(e.e_id) from employee e left join dept d on e.dep_id=d.dept_
 1 row in set (0.01 sec)
 
 7)SELECT the employee in finance department who has the least salary
-mysql> select * from employee e left join dept d on e.dep_id=d.dept_id where d.dep_name='FINANCE' ORDER BY e.salary desc limit 1;
-+------+------------+--------+--------+------------+---------+----------+-----------------+
-| E_ID | NAME       | DEP_ID | SALARY | MANAGER_ID | DEPT_ID | DEP_NAME | DEP_MANAGER     |
-+------+------------+--------+--------+------------+---------+----------+-----------------+
-| A128 | ADAM WAYNE | D05    |  94324 | A165       | D05     | FINANCE  | NATASHA STEVENS |
-+------+------------+--------+--------+------------+---------+----------+-----------------+
+mysql> select * from employee e inner join dept d on e.dep_id=d.dept_id where d.dep_name='FINANCE' ORDER BY e.salary limit 1;
++------+-----------------+--------+--------+------------+---------+----------+-----------------+
+| E_ID | NAME            | DEP_ID | SALARY | MANAGER_ID | DEPT_ID | DEP_NAME | DEP_MANAGER     |
++------+-----------------+--------+--------+------------+---------+----------+-----------------+
+| A165 | NATASHA STEVENS | D05    |  31377 | A298       | D05     | FINANCE  | NATASHA STEVENS |
++------+-----------------+--------+--------+------------+---------+----------+-----------------+
 1 row in set (0.00 sec)
 
 8)select the employye in producct dept who has the least salary
-mysql> select * from employee e left join dept d on e.dep_id=d.dept_id where d.dep_name='PRODUCT' ORDER BY e.salary limit 1;
+mysql> select * from employee e inner join dept d on e.dep_id=d.dept_id where d.dep_name='PRODUCT' ORDER BY e.salary limit 1;
 +------+-------------+--------+--------+------------+---------+----------+-------------+
 | E_ID | NAME        | DEP_ID | SALARY | MANAGER_ID | DEPT_ID | DEP_NAME | DEP_MANAGER |
 +------+-------------+--------+--------+------------+---------+----------+-------------+
@@ -88,7 +88,7 @@ mysql> select * from employee e left join dept d on e.dep_id=d.dept_id where d.d
 
 10) select the employee who report to natasha stevens
 
-mysql> select * from employee e left join dept d on e.dep_id=d.dept_id where d.dep_manager='NATASHA STEVENS';
+mysql> select * from employee e inner join dept d on e.dep_id=d.dept_id where d.dep_manager='NATASHA STEVENS';
 +------+-----------------+--------+--------+------------+---------+----------+-----------------+
 | E_ID | NAME            | DEP_ID | SALARY | MANAGER_ID | DEPT_ID | DEP_NAME | DEP_MANAGER     |
 +------+-----------------+--------+--------+------------+---------+----------+-----------------+
@@ -98,11 +98,14 @@ mysql> select * from employee e left join dept d on e.dep_id=d.dept_id where d.d
 +------+-----------------+--------+--------+------------+---------+----------+-----------------+
 3 rows in set (0.00 sec)
 
+#doubt in Q)11
+in the COUNT(e.e_id) columb it showing 1-1-1-1-1 
+
 ============================================================================================================================================
 
 11)display the employee name,employee count,dep name, dep manager in health depatment
 
-mysql> select e.name,d.dep_name,d.dep_manager,COUNT(e.e_id) from employee e left join dept d on e.dep_id=d.dept_id where d.dep_name='HEALTH' group by e.name,d.dep_name,d.dep_manager;
+mysql> select e.name,d.dep_name,d.dep_manager,COUNT(e.e_id) from employee e inner join dept d on e.dep_id=d.dept_id where d.dep_name='HEALTH' group by e.name,d.dep_name,d.dep_manager;
 +----------------+----------+-------------+---------------+
 | name           | dep_name | dep_manager | COUNT(e.e_id) |
 +----------------+----------+-------------+---------------+
@@ -119,7 +122,7 @@ mysql> select e.name,d.dep_name,d.dep_manager,COUNT(e.e_id) from employee e left
 
 12)display the department id,emp id and manager id for the communication dept/?
 
-mysql> select d.dept_id,e.e_id,e.manager_id from employee e left join dept d on e.dep_id=d.dept_id where d.dep_name='COMMUNICATION';
+mysql> select d.dept_id,e.e_id,e.manager_id from employee e inner join dept d on e.dep_id=d.dept_id where d.dep_name='COMMUNICATION';
 +---------+------+------------+
 | dept_id | e_id | manager_id |
 +---------+------+------------+
@@ -134,7 +137,7 @@ mysql> select d.dept_id,e.e_id,e.manager_id from employee e left join dept d on 
 
 13) select the avg expenses for each dept with deptid and deptname;
 
-mysql> select d.dept_id,d.dep_name,avg(e.salary) from employee e left join dept d on e.dep_id=d.dept_id group by d.dept_id,d.dep_name;
+mysql> select d.dept_id,d.dep_name,avg(e.salary) from employee e inner join dept d on e.dep_id=d.dept_id group by d.dept_id,d.dep_name;
 +---------+---------------+---------------+
 | dept_id | dep_name      | avg(e.salary) |
 +---------+---------------+---------------+
@@ -148,7 +151,7 @@ mysql> select d.dept_id,d.dep_name,avg(e.salary) from employee e left join dept 
 
 14)select the total expensess for the department finance;
 
-mysql> select sum(e.salary) from employee e left join dept d on e.dep_id=d.dept_id where d.dep_name='FINANCE';
+mysql> select sum(e.salary) from employee e inner join dept d on e.dep_id=d.dept_id where d.dep_name='FINANCE';
 +---------------+
 | sum(e.salary) |
 +---------------+
@@ -158,7 +161,7 @@ mysql> select sum(e.salary) from employee e left join dept d on e.dep_id=d.dept_
 
 15)SELECT the department which spends the least with deptid and dept name;
 
-mysql> select d.dept_id,d.dep_name,sum(e.salary) from employee e left join dept d on e.dep_id=d.dept_id group by  d.dept_id,d.dep_name order by sum(e.salary);
+mysql> select d.dept_id,d.dep_name,sum(e.salary) from employee e inner join dept d on e.dep_id=d.dept_id group by  d.dept_id,d.dep_name order by sum(e.salary);
 +---------+---------------+---------------+
 | dept_id | dep_name      | sum(e.salary) |
 +---------+---------------+---------------+
@@ -170,7 +173,7 @@ mysql> select d.dept_id,d.dep_name,sum(e.salary) from employee e left join dept 
 +---------+---------------+---------------+
 5 rows in set (0.01 sec)
 
-mysql> select d.dept_id,d.dep_name,sum(e.salary) from employee e left join dept d on e.dep_id=d.dept_id group by  d.dept_id,d.dep_name order by sum(e.salary) limit 1;
+mysql> select d.dept_id,d.dep_name,sum(e.salary) from employee e inner join dept d on e.dep_id=d.dept_id group by  d.dept_id,d.dep_name order by sum(e.salary) limit 1;
 +---------+----------+---------------+
 | dept_id | dep_name | sum(e.salary) |
 +---------+----------+---------------+
@@ -180,7 +183,7 @@ mysql> select d.dept_id,d.dep_name,sum(e.salary) from employee e left join dept 
 
 16)select the count of employee in each dept;
 
-mysql> select d.dep_name,count(e.e_id) from employee e left join dept d on e.dep_id=d.dept_id group by d.dep_name;
+mysql> select d.dep_name,count(e.e_id) from employee e inner join dept d on e.dep_id=d.dept_id group by d.dep_name;
 +---------------+---------------+
 | dep_name      | count(e.e_id) |
 +---------------+---------------+
@@ -194,11 +197,11 @@ mysql> select d.dep_name,count(e.e_id) from employee e left join dept d on e.dep
 
 17)select the count of emp in ecah dep having salary <10000;
 
-mysql> select d.dep_name,e.salary,count(e.e_id) from employee e left join dept d on e.dep_id=d.dept_id group by d.dep_name,e.salary having e.salary<10000;
+mysql> select d.dep_name,e.salary,count(e.e_id) from employee e inner join dept d on e.dep_id=d.dept_id group by d.dep_name,e.salary having e.salary<10000;
 Empty set (0.00 sec)
 
 18)select the count of employee in deptid D04;
-mysql> select count(e.e_id) as 'Number of emp' from employee e left join dept d on e.dep_id=d.dept_id where d.dept_id='D04';
+mysql> select count(e.e_id) as 'Number of emp' from employee e inner join dept d on e.dep_id=d.dept_id where d.dept_id='D04';
 +---------------+
 | Number of emp |
 +---------------+
@@ -208,8 +211,7 @@ mysql> select count(e.e_id) as 'Number of emp' from employee e left join dept d 
 
 19) select all department details of the dept with maximun employee;	
 
-mysql> select d.dept_id,d.dep_name, d.dep_manager,count(d.dept_id) as emp_count from dept d left join employee e on d.dept_id=e.dep_id group by d.dept_id,d.dep_name, d.dep_manager 
-	 order by emp_count desc limit 1;
+mysql> select d.dept_id,d.dep_name, d.dep_manager,count(d.dept_id) as emp_count from dept d inner join employee e on d.dept_id=e.dep_id group by d.dept_id,d.dep_name, d.dep_manager order by emp_count desc limit 1;
 +---------+----------+-------------+-----------+
 | dept_id | dep_name | dep_manager | emp_count |
 +---------+----------+-------------+-----------+
