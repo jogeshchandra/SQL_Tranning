@@ -1,0 +1,183 @@
+mysql> use sql_q;
+Database changed
+mysql> show tables;
++------------------+
+| Tables_in_sql_q  |
++------------------+
+| employeeinfo     |
+| employeeposition |
++------------------+
+2 rows in set (0.01 sec)
+
+mysql> select * from employeeinfo;
++-------------+----------+----------+------------+---------+----------------+------------+--------+
+| ï»¿EmpId    | empFname | EmpLname | Depratment | Project | Address        | DOB        | Gender |
++-------------+----------+----------+------------+---------+----------------+------------+--------+
+|           1 | Sanjay   | Mehra    | HR         | P1      | Hyderabad(HYD) | 01-12-1976 | M      |
+|           2 | Ananya   | Mishra   | Admin      | P2      | Delhi(DEL)     | 02-05-1968 | F      |
+|           3 | Rohan    | Diwan    | Account    | P3      | Mumbai(BOM)    | 01-01-1980 | M      |
+|           4 | Sonia    | Kulkarni | HR         | P1      | Hyderabad(HYD) | 02-05-1992 | F      |
+|           5 | Ankit    | Kapoor   | Admin      | P2      | Delhi(DEL)     | 03-07-1994 | M      |
++-------------+----------+----------+------------+---------+----------------+------------+--------+
+5 rows in set (0.01 sec)
+
+mysql> select * from employeeposition;
++-------------+-------------+---------------+--------+
+| ï»¿EmpID    | EmpPosition | DateOfJoining | Salary |
++-------------+-------------+---------------+--------+
+|           1 | Manager     | 01-05-2022    | 500000 |
+|           2 | Executive   | 02-05-2022    |  75000 |
+|           3 | Manager     | 01-05-2022    |  90000 |
+|           2 | Lead        | 02-05-2022    |  85000 |
+|           1 | Executive   | 01-05-2022    | 300000 |
++-------------+-------------+---------------+--------+
+5 rows in set (0.00 sec)
+
+1)Write a query to find the Nth highest salary from the table without using TOP/limit keyword.
+
+mysql> SELECT Salary FROM EmployeePosition E1 WHERE 3 = ( SELECT COUNT( DISTINCT ( E2.Salary ) ) FROM EmployeePosition E2 WHERE E2.Salary >  E1.Salary );
++--------+
+| Salary |
++--------+
+|  85000 |
++--------+
+1 row in set (0.01 sec)
+
+==========[[[ or ]]]========
+
+mysql> select salary from employeeposition order by salary desc limit 3,1;
++--------+
+| salary |
++--------+
+|  85000 |
++--------+
+1 row in set (0.00 sec)
+
+2)	Write a query to fetch only the place name(string before brackets) from the Address column of EmployeeInfo table.
+
+mysql> SELECT SUBSTR(Address, 1, locate('(',Address)-1) FROM EmployeeInfo;
++----------------------------------------------+
+| SUBSTRING(Address, 1, locate('(',Address)-1) |
++----------------------------------------------+
+| Hyderabad                                    |
+| Delhi                                        |
+| Mumbai                                       |
+| Hyderabad                                    |
+| Delhi                                        |
++----------------------------------------------+
+5 rows in set (0.00 sec)
+
+3)Write a query to fetch 50% records from the EmployeeInfo table.
+mysql> select * from employeeinfo where empid <= (select count(empid)/2 from employeeinfo);
++-------+----------+----------+------------+---------+----------------+------------+--------+
+| empid | empFname | EmpLname | Depratment | Project | Address        | DOB        | Gender |
++-------+----------+----------+------------+---------+----------------+------------+--------+
+|     1 | Sanjay   | Mehra    | HR         | P1      | Hyderabad(HYD) | 01-12-1976 | M      |
+|     2 | Ananya   | Mishra   | Admin      | P2      | Delhi(DEL)     | 02-05-1968 | F      |
++-------+----------+----------+------------+---------+----------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql>
+
+4)	How to fetch duplicate records from a table
+
+===========neew =========
+select * from name_list group by firstname having count(firstname)>1;
+
+
+
+mysql> use pratice;
+Database changed
+mysql> select * from name_list order by firstname;
++-----------+----------+--------+
+| firstname | lastname | salary |
++-----------+----------+--------+
+| j         | ch       |   6598 |
+| j         | ch       |   6598 |
+| jo        | cha      |  71364 |
+| jo        | cha      |  71364 |
+| jog       | chan     |   3264 |
+| joge      | chand    |   7944 |
+| jogesh    | chandra  |   NULL |
+| jogesh    | chandra  |   2000 |
++-----------+----------+--------+
+8 rows in set (0.00 sec)
+
+mysql> select * from (
+    -> select firstname, row_number() over (partition by firstname) as rn from name_list)  x
+    -> where x.rn <>1 order by firstname;
++-----------+----+
+| firstname | rn |
++-----------+----+
+| j         |  2 |
+| jo        |  2 |
+| jogesh    |  2 |
++-----------+----+
+3 rows in set (0.00 sec)
+
+---------DATA----------
+mysql> select * from  EmployeeSalary;
++-------------+---------+--------+----------+
+| ï»¿EmpId    | Project | Salary | Variable |
++-------------+---------+--------+----------+
+|         121 | P1      |   8000 |      500 |
+|         321 | P2      |  10000 |     1000 |
+|         421 | P1      |  12000 |        0 |
++-------------+---------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employeedetails;
++-------------+--------------+-----------+---------------+------------+
+| ï»¿EmpId    | FullName     | ManagerId | DateOfJoining | City       |
++-------------+--------------+-----------+---------------+------------+
+|         121 | John Snow    |       321 | 01/31/2019    | Toronto    |
+|         321 | Walter White |       986 | 01/30/2020    | California |
+|         421 | Kuldeep Rana |       876 | 27-11-2021    | New Delhi  |
++-------------+--------------+-----------+---------------+------------+
+3 rows in set (0.00 sec)
+
+5)	Write an SQL query to fetch common records between two tables.
+mysql> select * from employeedetails where empid in (select empid from EmployeeSalary);
++-------+--------------+-----------+---------------+------------+
+| empid | FullName     | ManagerId | DateOfJoining | City       |
++-------+--------------+-----------+---------------+------------+
+|   121 | John Snow    |       321 | 01/31/2019    | Toronto    |
+|   321 | Walter White |       986 | 01/30/2020    | California |
+|   421 | Kuldeep Rana |       876 | 27-11-2021    | New Delhi  |
++-------+--------------+-----------+---------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+6)	Write an SQL query to remove duplicates from a table
+DELETE E1 FROM EmployeeDetails E1
+INNER JOIN EmployeeDetails E2 
+WHERE E1.EmpId > E2.EmpId 
+AND E1.FullName = E2.FullName 
+AND E1.ManagerId = E2.ManagerId
+AND E1.DateOfJoining = E2.DateOfJoining
+AND E1.City = E2.City;
+
+7)	Write an SQL query to create an empty table with the same structure as some other table.
+
+mysql> create table new_table as table employeedetails limit 0;
+Query OK, 0 rows affected (0.06 sec)
+
+8)Write an SQL query to fetch only odd rows from the table.
+
+mysql> select * from employeedetails where mod(empid,2) <> 0;
++-------+--------------+-----------+---------------+------------+
+| empid | FullName     | ManagerId | DateOfJoining | City       |
++-------+--------------+-----------+---------------+------------+
+|   121 | John Snow    |       321 | 01/31/2019    | Toronto    |
+|   321 | Walter White |       986 | 01/30/2020    | California |
+|   421 | Kuldeep Rana |       876 | 27-11-2021    | New Delhi  |
++-------+--------------+-----------+---------------+------------+
+3 rows in set (0.00 sec)
+
+9)Write an SQL query to fetch only even rows from the table.
+mysql> select * from employeedetails where mod(empid,2) = 0;
+Empty set (0.00 sec)
+
+
+Records: 0  Duplicates: 0  Warnings: 0

@@ -1,0 +1,31 @@
+
+
+->select substr(address,-5) from emp ;
+
+-> select substr( address,1,charindex( '(',addesss ) ) from emp;
+
+
+->create table new_table as table old_table;--- will create table with structure + data;
+->create table new_table as table old_table limit 0;--- will create table with same structure not data
+-> or create table new_table as table old_table 1=2;
+
+
+18,
+select distinct salary from emppos order by salary desc limit 2;
+select distinct salary from empos order by salary limit 2;
+
+Write a query to fetch only the place name(string before brackets) from the Address column of EmployeeInfo table.
+
+
+Q21. Write a query to find the Nth highest salary from the table without using TOP/limit keyword.
+
+SELECT DISTINCT Salary FROM EmployeePosition E1 
+ WHERE 2 >= (SELECTCOUNT(DISTINCT Salary) FROM EmployeePosition E2 
+  WHERE E1.Salary <= E2.Salary) ORDER BY E1.Salary DESC;
+
+======== or by using limit find Nth heightes===========
+
+select salary from EmployeePosition order by salary desc limit N-1,1;
+
+Write a query to fetch 50% records from the EmployeeInfo table.
+

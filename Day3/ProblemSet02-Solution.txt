@@ -1,0 +1,108 @@
+1. Write a valid SQL statement that calculates the total weight of all corn cobs that were picked from the garden:
+
+mysql> select sum(p2.weight) from plant p1 join picked p2 on p1.plantid=p2.plantfk where lower(p1.name)='corn';
++--------------------+
+| sum(p2.weight)     |
++--------------------+
+| 17.539999961853027 |
++--------------------+
+1 row in set (0.00 sec)
+
+2. For some reason Erin has change his location for picking the tomato to North. Write the corresponding query.
+
+
+
+3. Insert a new column 'Exper' of type Number (30) to the 'gardener' table which stores Experience of the of person. 
+   How will you modify this to varchar2(30).
+
+alter table gardener add exper int;
+alter table gardener modify exper varchar(30);
+
+4.Write a query to find the plant name which required seeds less than 20 which plant on 14-APR
+
+mysql> select p.name from plant p join planted p1 on p.plantid=p1.plantfk where seeds<20 and p1.date1='2012-04-14';
++--------+
+| name   |
++--------+
+| Carrot |
++--------+
+1 row in set (0.04 sec)
+
+5. List the amount of sunlight and water to all plants with names that start with letter 'c' or letter 'r'.
+
+mysql> select sum(sunlight),sum(water) from plant where lower(name) like 'c%' or lower(name) like 'r%';
++--------------------+------------------+
+| sum(sunlight)      | sum(water)       |
++--------------------+------------------+
+| 0.9799999892711639 | 77.6599999666214 |
++--------------------+------------------+
+1 row in set (0.00 sec)
+
+6. Write a valid SQL statement that displays the plant name and the total amount of seed required for each plant that were plant in the garden.
+ The output should be in descending order of plant name.
+
+mysql> select p1.name,sum(p2.seeds) from plant p1 join planted p2 on p1.plantid=p2.plantfk group by p1.name order by p1.
+name desc;
++---------+---------------+
+| name    | sum(p2.seeds) |
++---------+---------------+
+| Tomato  |            38 |
+| Radish  |            30 |
+| Lettuce |            30 |
+| Corn    |            32 |
+| Carrot  |            42 |
+| Beet    |            36 |
++---------+---------------+
+6 rows in set (0.00 sec)
+
+
+7. Write a valid SQL statement that calculates the average number of items produced per seed planted for each plant type
+	:( (Average Number of Items = Total Amount Picked / Total Seeds Planted.)
+
+mysql> select avg( p3.amount/p2.seeds )  from (plant p1 join planted p2 on p1.plantid=p2.plantfk) join picked p3 on p1.p
+lantid=p3.plantfk group by p1.name;
++---------------------------+
+| avg( p3.amount/p2.seeds ) |
++---------------------------+
+|                1.07142500 |
+|                2.33332500 |
+|                0.39470000 |
+|                0.76670000 |
++---------------------------+
+4 rows in set (0.00 sec)
+
+8.Write a valid sql that would produce a result given below
+
+mysql> select g.name,p.name,p1.date1,p1.amount from picked p1 join plant p on p.plantid=p1.plantfk join gardener g on g.gardenerid=p1.gardenerfk where upper(g.name)='TIM' AND p1.amount>20 ORDER BY p1.amount ;
++------+--------+------------+--------+
+| name | name   | date1      | amount |
++------+--------+------------+--------+
+| Tim  | Radish | 2012-07-16 |     23 |
+| Tim  | Carrot | 2012-08-18 |     28 |
++------+--------+------------+--------+
+2 rows in set (0.00 sec)
+
+9. Find out persons who picked from the same location as he/she planted.
+
+mysql> select distinct g.name from (gardener g join planted p1 on g.gardenerid=p1.gardenerfk) left join picked p2 on g.g
+ardenerid=p2.gardenerfk where p1.locationfk=p2.locationfk;
++--------+
+| name   |
++--------+
+| Tim    |
+| Father |
+| Erin   |
++--------+
+3 rows in set (0.00 sec)
+
+10. Create a view that lists all the plant names picked from all locations except 'West' in the month of August.
+
+mysql> select p1.name from ( plant p1 join picked p2 on p1.plantid=p2.plantfk ) join location l on l.locationid=p2.locationfk where ( p2.date1 not between '2012-08-01' and '2012-08-31' ) and l.name <> 'west';
++--------+
+| name   |
++--------+
+| Radish |
++--------+
+1 row in set (0.04 sec)
+
+

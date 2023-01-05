@@ -1,0 +1,71 @@
+create database sql_day3;
+use sql_day3;
+
+use sql_day3;
+
+
+
+select sum(sunlight),sum(water) from plant where lower(name) like ('c%' or 'r%');
+show databases;
+use pratice;
+
+drop table t1;
+show tables;
+create table t1 as table table1 limit 0;
+select * from t1;
+insert into t1 values("dsd","df","fdf");
+use sql_day3;
+
+select * from plant where plantId%2=0;
+select * from plant where mod(plantId,2)=0;
+
+
+select p1.name,p2.date1,l.name from ( plant p1 join picked p2 on p1.plantid=p2.plantfk ) join location l on l.locationid=p2.locationfk where (p2.date1  not between '2012-08-01' and '2012-08-31') and l.name <>'west' ;
+
+show databases;
+use pratice;
+show tables;
+
+create table name_list(
+firstname varchar(20),
+lastname varchar(30));
+
+insert into name_list values("jogesh","chandra");
+
+select * from name_list;
+select firstname || lastname as fullname from name_list;
+select firstname from name_list;
+alter table name_list add salary int;
+update name_list set salary=1000 where firstname="jogesh";
+insert into name_list values("jogesh","chandra",2000);
+insert into name_list values("joge","chand",7944);
+insert into name_list values("jog","chan",3264);
+insert into name_list values("jo","cha",71364);
+insert into name_list values("j","ch",6598);
+
+select count(salary) from name_list;
+select salary from name_list order by salary desc;
+select salary from name_list order by salary desc limit 2,1;
+select salary from name_list;
+select salary from name_list l1 where 2=(select count(salary) from name_list l2 where l2.salary>l1.salary);
+
+select firstname , count(salary) as A from name_list group by firstname having A>1;	
+select * from name_list order by firstname;
+use pratice;
+select * from (
+select firstname, row_number() over (partition by firstname) as rn from name_list)  x 
+where x.rn <>1 order by firstname;
+
+
+select salary from name_list order by salary desc limit 2,1;
+select salary from name_list l1 where 2=(select count(salary) from name_list l2 where l2.salary>l1.salary);
+
+select distinct firstname from name_list order by firstname desc,firstname asc;
+
+SELECT salary from name_list order by salary desc;
+select distinct salary from name_list l1 where 3= ( select count(distinct(l2.salary)) from name_list l2 where l2.salary>l1.salary );
+select distinct salary from name_list order by salary desc limit 3,1;
+
+select salary from name_list order by salary;
+select distinct salary from name_list order by salary limit 4,1;
+select salary from name_list l1 where 3= ( select count(distinct(l2.salary)) from name_list l2 where l2.salary<l1.salary );
