@@ -1,0 +1,225 @@
+1)List full details of all hotels
+
+mysql> select * from hotel h join room r on h.hotel_no=r.hotel_no;
++----------+------------------+----------+---------+----------+------+---------+
+| Hotel_No | Name             | City     | Room_no | Hotel_No | Type | Price   |
++----------+------------------+----------+---------+----------+------+---------+
+| H111     | Empire Hotel     | New York |     313 | H111     | S    |     145 |
+| H111     | Empire Hotel     | New York |     412 | H111     | N    |     145 |
+| H235     | Park Place       | New York |    1267 | H235     | N    |     175 |
+| H235     | Park Place       | New York |    1289 | H235     | N    |     195 |
+| H432     | Brownstone Hotel | Toronto  |     876 | H432     | S    | 124.001 |
+| H432     | Brownstone Hotel | Toronto  |     898 | H432     | S    |     124 |
+| H498     | James Plaza      | Toronto  |     345 | H498     | N    |     160 |
+| H498     | James Plaza      | Toronto  |     467 | H498     | N    |     180 |
+| H193     | Devon Hotel      | Boston   |    1001 | H193     | S    |     150 |
+| H193     | Devon Hotel      | Boston   |    1201 | H193     | N    |     175 |
+| H437     | Clairmont Hotel  | Boston   |     257 | H437     | N    |     140 |
+| H437     | Clairmont Hotel  | Boston   |     223 | H437     | N    |     155 |
++----------+------------------+----------+---------+----------+------+---------+
+12 rows in set (0.00 sec)
+
+2)Liat full details of all hotels in new york
+
+mysql> select * from hotel h join room r on h.hotel_no=r.hotel_no where h.city='New York';
++----------+--------------+----------+---------+----------+------+-------+
+| Hotel_No | Name         | City     | Room_no | Hotel_No | Type | Price |
++----------+--------------+----------+---------+----------+------+-------+
+| H111     | Empire Hotel | New York |     313 | H111     | S    |   145 |
+| H111     | Empire Hotel | New York |     412 | H111     | N    |   145 |
+| H235     | Park Place   | New York |    1267 | H235     | N    |   175 |
+| H235     | Park Place   | New York |    1289 | H235     | N    |   195 |
++----------+--------------+----------+---------+----------+------+-------+
+4 rows in set (0.00 sec)
+
+
+3)list the names and citis of all guests,ordered according to their cities
+
+mysql> select name,city from guest order by city;
++---------------+--------------+
+| name          | city         |
++---------------+--------------+
+| Robert Swift  | Atlanta      |
+| Tara Cummings | Baltimore    |
+| Edward Cane   | Baltimore    |
+| Tom Hancock   | Philadelphia |
+| Adam Wayne    | Pittsburgh   |
+| Vanessa Parry | Pittsburgh   |
++---------------+--------------+
+6 rows in set (0.00 sec)
+
+4)list all details for non-smoking rooms in ascending order of price
+
+mysql> select * from room r join hotel h on r.hotel_no=h.hotel_no where r.type like 'N%' order by r.price;
++---------+----------+------+-------+----------+-----------------+----------+
+| Room_no | Hotel_No | Type | Price | Hotel_No | Name            | City     |
++---------+----------+------+-------+----------+-----------------+----------+
+|     257 | H437     | N    |   140 | H437     | Clairmont Hotel | Boston   |
+|     412 | H111     | N    |   145 | H111     | Empire Hotel    | New York |
+|     223 | H437     | N    |   155 | H437     | Clairmont Hotel | Boston   |
+|     345 | H498     | N    |   160 | H498     | James Plaza     | Toronto  |
+|    1267 | H235     | N    |   175 | H235     | Park Place      | New York |
+|    1201 | H193     | N    |   175 | H193     | Devon Hotel     | Boston   |
+|     467 | H498     | N    |   180 | H498     | James Plaza     | Toronto  |
+|    1289 | H235     | N    |   195 | H235     | Park Place      | New York |
++---------+----------+------+-------+----------+-----------------+----------+
+8 rows in set (0.00 sec)
+
+5)List the number of hotels there are
+
+mysql> select count(hotel_no) from hotel ;
++-----------------+
+| count(hotel_no) |
++-----------------+
+|               6 |
++-----------------+
+1 row in set (0.00 sec)
+
+6)list the cities in whic gustes live . each city should be listed only once
+mysql> select distinct city from guest ;
++--------------+
+| city         |
++--------------+
+| Pittsburgh   |
+| Baltimore    |
+| Philadelphia |
+| Atlanta      |
++--------------+
+4 rows in set (0.00 sec)
+
+7)list the average price of a room
+
+mysql> select avg(price) from room ;
++------------+
+| avg(price) |
++------------+
+|  155.66675 |
++------------+
+1 row in set (0.04 sec)
+
+8)list hotel names,their room numbes,and the type of that room
+
+mysql> select h.name,r.room_no,r.type from hotel h join room r on h.hotel_no=r.hotel_no;
++------------------+---------+------+
+| name             | room_no | type |
++------------------+---------+------+
+| Empire Hotel     |     313 | S    |
+| Empire Hotel     |     412 | N    |
+| Park Place       |    1267 | N    |
+| Park Place       |    1289 | N    |
+| Brownstone Hotel |     876 | S    |
+| Brownstone Hotel |     898 | S    |
+| James Plaza      |     345 | N    |
+| James Plaza      |     467 | N    |
+| Devon Hotel      |    1001 | S    |
+| Devon Hotel      |    1201 | N    |
+| Clairmont Hotel  |     257 | N    |
+| Clairmont Hotel  |     223 | N    |
++------------------+---------+------+
+12 rows in set (0.00 sec)
+
+9)list the hotel names,their room numbers,and room numbers for all hotels in new york
+
+mysql> select h.name,b.date_from,b.date_to,r.room_no from hotel h join room r on h.hotel_no=r.hotel_no left join booking b on h.hotel_no=b.hotel_no where h.city='New york';
++--------------+-----------+------------+---------+
+| name         | date_from | date_to    | room_no |
++--------------+-----------+------------+---------+
+| Empire Hotel | 18-AUG-99 | 21 -AUG-99 |     313 |
+| Empire Hotel | 10-Aug-99 | 15-AUG-99  |     313 |
+| Empire Hotel | 18-AUG-99 | 21 -AUG-99 |     412 |
+| Empire Hotel | 10-Aug-99 | 15-AUG-99  |     412 |
+| Park Place   | 05-SEP-99 | 12-SEP-99  |    1267 |
+| Park Place   | 05-SEP-99 | 12-SEP-99  |    1289 |
++--------------+-----------+------------+---------+
+6 rows in set (0.01 sec)
+
+10)what is the number of booking that stared in the month of september
+
+mysql> select count(room_no) from booking where date_from like '%SEP%';
++----------------+
+| count(room_no) |
++----------------+
+|              4 |
++----------------+
+1 row in set (0.00 sec)
+
+
+11)list the names and cities of guests who began a stay in new york in aug
+
+mysql> select g.name,g.city from booking b join guest g on g.guest_no=b.guest_no join hotel h on h.hotel_no=b.hotel_no where b.date_from like "%AUG%" and h.city like 'New York';
++---------------+------------+
+| name          | city       |
++---------------+------------+
+| Adam Wayne    | Pittsburgh |
+| Tara Cummings | Baltimore  |
++---------------+------------+
+2 rows in set (0.00 sec)
+
+====================================== [[[[[  OR  ]]]]] ===========================================================
+
+mysql> select g.name , g.city from ( guest g join booking b on g.guest_no=b.guest_no ) join hotel h on h.hotel_no=b.hotel_no where b.date_from like "%AUG%" AND h.city = 'New York';
++---------------+------------+
+| name          | city       |
++---------------+------------+
+| Adam Wayne    | Pittsburgh |
+| Tara Cummings | Baltimore  |
++---------------+------------+
+2 rows in set (0.00 sec)
+
+
+
+12)list the hotel names and room numbers of any hotel rooms that have not been booked
+
+mysql> select h.name,r.room_no from room r left join booking b on r.room_no=b.room_no join hotel h on r.hotel_no=h.hotel
+_no where b.room_no is Null;
++------------------+---------+
+| name             | room_no |
++------------------+---------+
+| Empire Hotel     |     313 |
+| Park Place       |    1289 |
+| Brownstone Hotel |     876 |
+| Brownstone Hotel |     898 |
+| Clairmont Hotel  |     257 |
++------------------+---------+
+5 rows in set (0.00 sec)
+
+
+
+13)list the hotel names and city of the hotel with the highest priced room
+mysql> select h.name,h.city,max(r.price) from hotel h join room r on h.hotel_no=r.hotel_no group by h.name,h.city ;
++------------------+----------+--------------+
+| name             | city     | max(r.price) |
++------------------+----------+--------------+
+| Empire Hotel     | New York |          145 |
+| Park Place       | New York |          195 |
+| Brownstone Hotel | Toronto  |      124.001 |
+| James Plaza      | Toronto  |          180 |
+| Devon Hotel      | Boston   |          175 |
+| Clairmont Hotel  | Boston   |          155 |
++------------------+----------+--------------+
+6 rows in set (0.00 sec)
+
+14)list hotel names,room numbers,cities, and prices for hotels that have rooms with prices lower than the lowest priced room in a boston hotel
+
+
+mysql> select h.name,r.room_no,h.city,r.price from hotel h join room r on h.hotel_no=r.hotel_no where r.price<(select min(r.price) from room r join hotel h on
+ r.hotel_no=h.hotel_no where h.city='Boston');
++------------------+---------+---------+---------+
+| name             | room_no | city    | price   |
++------------------+---------+---------+---------+
+| Brownstone Hotel |     898 | Toronto |     124 |
+| Brownstone Hotel |     876 | Toronto | 124.001 |
++------------------+---------+---------+---------+
+2 rows in set (0.00 sec)
+
+
+15)list the avg price of a room grouped by city
+mysql> select h.city,avg(r.price) from room r join hotel h on r.hotel_no=h.hotel_no group by h.city;
++----------+--------------+
+| city     | avg(r.price) |
++----------+--------------+
+| New York |          165 |
+| Toronto  |    147.00025 |
+| Boston   |          155 |
++----------+--------------+
+3 rows in set (0.00 sec)

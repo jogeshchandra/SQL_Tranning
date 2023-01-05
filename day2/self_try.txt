@@ -1,0 +1,54 @@
+mysql> select * from hotel h join room r on h.hotel_no=r.hotel_no;
++----------+------------------+----------+---------+----------+------+---------+
+| Hotel_No | Name             | City     | Room_no | Hotel_No | Type | Price   |
++----------+------------------+----------+---------+----------+------+---------+
+| H111     | Empire Hotel     | New York |     313 | H111     | S    |     145 |
+| H111     | Empire Hotel     | New York |     412 | H111     | N    |     145 |
+| H235     | Park Place       | New York |    1267 | H235     | N    |     175 |
+| H235     | Park Place       | New York |    1289 | H235     | N    |     195 |
+| H432     | Brownstone Hotel | Toronto  |     876 | H432     | S    | 124.001 |
+| H432     | Brownstone Hotel | Toronto  |     898 | H432     | S    |     124 |
+| H498     | James Plaza      | Toronto  |     345 | H498     | N    |     160 |
+| H498     | James Plaza      | Toronto  |     467 | H498     | N    |     180 |
+| H193     | Devon Hotel      | Boston   |    1001 | H193     | S    |     150 |
+| H193     | Devon Hotel      | Boston   |    1201 | H193     | N    |     175 |
+| H437     | Clairmont Hotel  | Boston   |     257 | H437     | N    |     140 |
+| H437     | Clairmont Hotel  | Boston   |     223 | H437     | N    |     155 |
++----------+------------------+----------+---------+----------+------+---------+
+12 rows in set (0.00 sec)
+
+mysql> select * from hotel h inner join room r on h.hotel_no=r.hotel_no;
++----------+------------------+----------+---------+----------+------+---------+
+| Hotel_No | Name             | City     | Room_no | Hotel_No | Type | Price   |
++----------+------------------+----------+---------+----------+------+---------+
+| H111     | Empire Hotel     | New York |     313 | H111     | S    |     145 |
+| H111     | Empire Hotel     | New York |     412 | H111     | N    |     145 |
+| H235     | Park Place       | New York |    1267 | H235     | N    |     175 |
+| H235     | Park Place       | New York |    1289 | H235     | N    |     195 |
+| H432     | Brownstone Hotel | Toronto  |     876 | H432     | S    | 124.001 |
+| H432     | Brownstone Hotel | Toronto  |     898 | H432     | S    |     124 |
+| H498     | James Plaza      | Toronto  |     345 | H498     | N    |     160 |
+| H498     | James Plaza      | Toronto  |     467 | H498     | N    |     180 |
+| H193     | Devon Hotel      | Boston   |    1001 | H193     | S    |     150 |
+| H193     | Devon Hotel      | Boston   |    1201 | H193     | N    |     175 |
+| H437     | Clairmont Hotel  | Boston   |     257 | H437     | N    |     140 |
+| H437     | Clairmont Hotel  | Boston   |     223 | H437     | N    |     155 |
++----------+------------------+----------+---------+----------+------+---------+
+12 rows in set (0.00 sec)
+
+
+7)list the average price of a room according to hotels
+
+mysql> select h.name,avg(r.price) from hotel h join room r on h.hotel_no=r.hotel_no group by h.name;
++------------------+--------------+
+| name             | avg(r.price) |
++------------------+--------------+
+| Empire Hotel     |          145 |
+| Park Place       |          185 |
+| Brownstone Hotel |     124.0005 |
+| James Plaza      |          170 |
+| Devon Hotel      |        162.5 |
+| Clairmont Hotel  |        147.5 |
++------------------+--------------+
+6 rows in set (0.00 sec)
+
